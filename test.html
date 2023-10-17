@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .autocomplete {
+        position: relative;
+        width: 300px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        display: none;
+    }
+
+    .suggestion {
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .suggestion:last-child {
+        border: none;
+    }
+</style>
+
+<body>
+    
+    <div class="autocomplete">
+        <input type="text" id="inputField" placeholder="开始输入...">
+        <div class="suggestions" id="suggestions"></div>
+    </div>
+
+    <script>
+        const inputField = document.getElementById("inputField");
+        const suggestions = document.getElementById("suggestions");
+
+        // 数据源，用于自动提示
+        const data = ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes", "Kiwi", "Lemon", "Mango", "Orange", "Peach", "Pear", "Plum", "Strawberry"];
+
+        inputField.addEventListener("input", function () {
+            const inputValue = inputField.value.toLowerCase();
+            suggestions.innerHTML = ""; // 清空建议列表
+
+            if (inputValue.trim() !== "") {
+                const matchingResults = data.filter(item => item.toLowerCase().includes(inputValue));
+                matchingResults.forEach(result => {
+                    const suggestion = document.createElement("div");
+                    suggestion.classList.add("suggestion");
+                    suggestion.textContent = result;
+                    suggestions.appendChild(suggestion);
+                });
+
+                if (matchingResults.length > 0) {
+                    suggestions.style.display = "block";
+                } else {
+                    suggestions.style.display = "none";
+                }
+            } else {
+                suggestions.style.display = "none";
+            }
+        });
+
+        // 当用户点击建议项时，将其填充到输入框
+        suggestions.addEventListener("click", function (e) {
+            if (e.target.classList.contains("suggestion")) {
+                inputField.value = e.target.textContent;
+                suggestions.style.display = "none";
+            }
+        });
+
+        // 点击页面其他位置时，隐藏建议列表
+        document.addEventListener("click", function (e) {
+            if (e.target !== suggestions && e.target !== inputField) {
+                suggestions.style.display = "none";
+            }
+        });
+
+    </script>
+</body>
+
+</html>

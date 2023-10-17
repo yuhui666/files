@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>可折叠目录</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #393838;
+            color: #fff;
+        }
+
+        .tree {
+            padding: 6px;
+            margin-top: 6px;
+            display: inline-block;
+            list-style-type: none;
+        }
+
+        .tree-container {
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .tree-item {
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .tree-item.active {
+            background-color: #999999;
+        }
+
+        .tree-icon {
+            margin-right: 10px;
+        }
+
+        .sub-tree {
+            display: none;
+            padding-left: 15px;
+        }
+
+
+        .span-active:hover {
+            box-shadow: #00ff00;
+            text-shadow: #fff;
+            border: .3em solid #00ff00;
+            border-radius: .5em;
+            background-color: #00ff00;
+            color: #000;
+            transform: scale(2.0);
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+            /* 阴影效果 */
+        }
+
+        ul {
+            height: auto;
+            list-style-type: none;
+        }
+
+        ul li::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            background-image: url('../img/最右未选中.png');
+            background-size: 20px 15px;
+            background-position: unset;
+            margin-right: 5px;
+        }
+
+        ul li:hover::before {
+            background-image: url('../img/最右选中.png');
+        }
+
+        .autocomplete {
+            position: relative;
+            width: 300px;
+        }
+
+        input {
+            margin-top: 12px;
+            margin-left: 12px;
+            width: auto;
+            padding: 10px;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            display: none;
+        }
+
+        .suggestion {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .suggestion:last-child {
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div
+        style="display: flex; align-items: center; background-color: #363636; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3); height: 50px;">
+        <img src="../img/flutter.png" style="height: 60%; margin-right: 10px; margin-left: 10px;">
+        <span style="font-size: 30px;">Fluttr</span>
+    </div>
+    <div style="width: auto; height: auto; display: flex;">
+        <div style="display: flex;">
+            <div style="flex-direction: column; display: flex !important;">
+                <div class="autocomplete">
+                    <input type="text" id="inputField" placeholder="开始输入...">
+                    <div class="suggestions" id="suggestions"></div>
+                </div>
+                <ul class="tree" id="directory" style="display: block !important;">
+            </div>
+        </div>
+        <div
+            style="width: 3px; height: auto; background-color: #999999; margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+        </div>
+        <div id="tooltip" style="flex: 1; margin-top: 20px;"></div>
+    </div>
+
+
+
+    <script>
+        // JSON 数据定义目录结构
+        const data = [
+            {
+                label: "目录 1",
+                tooltip: "这是目录 1",
+                children: [
+                    {
+                        label: "子目录 1.1",
+                        tooltip: "这是子目录 1.1",
+                        children: [
+                            {
+                                label: "子目录 1.1.1",
+                                tooltip: "这是子目录 1.1.1",
+                            },
+                            {
+                                label: "子目录 1.1.2",
+                                tooltip: "这是子目录 1.1.2",
+                                children: [
+                                    {
+                                        label: "子目录 1.1.2.1",
+                                        tooltip: "这是子目录 1.1.2.1",
+                                    },
+                                    {
+                                        label: "子目录 1.1.2.2",
+                                        tooltip: "这是子目录 1.1.2.2",
+                                    },
+                                ]
+                            },
+                        ]
+                    },
+                    {
+                        label: "子目录 1.2",
+                        tooltip: "这是子目录 1.2",
+                    },
+                ],
+            },
+            {
+                label: "目录 2",
+                tooltip: "这是目录 2",
+            },
+            {
+                label: "目录 3",
+                tooltip: "这是目录 3",
+            },
+        ];
+
+        const list = [];
+
+        function formatDatas(objs) {
+            objs.forEach(obj => {
+                obj.add(obj.label);
+                if (obj.children) {
+                    formatDatas(obj);
+                };
+            });
+        }
+
+
+        function initJson() {
+            const inputField = document.getElementById("inputField");
+            const suggestions = document.getElementById("suggestions");
+
+            formatDatas(list);
+            // 数据源，用于自动提示
+            // const list = ["目录1", "目录2", "Cherry", "Date", "Fig", "Grapes", "Kiwi", "Lemon", "Mango", "Orange", "Peach", "Pear", "Plum", "Strawberry"];
+            inputField.addEventListener("input", function () {
+                const inputValue = inputField.value.toLowerCase();
+                suggestions.innerHTML = ""; // 清空建议列表
+
+                if (inputValue.trim() !== "") {
+                    const matchingResults = list.filter(item => item.toLowerCase().includes(inputValue));
+                    matchingResults.forEach(result => {
+                        const suggestion = document.createElement("div");
+                        suggestion.classList.add("suggestion");
+                        suggestion.textContent = result;
+                        suggestions.appendChild(suggestion);
+                    });
+
+                    if (matchingResults.length > 0) {
+                        suggestions.style.display = "block";
+                    } else {
+                        suggestions.style.display = "none";
+                    }
+                } else {
+                    suggestions.style.display = "none";
+                }
+            });
+
+            // 当用户点击建议项时，将其填充到输入框
+            suggestions.addEventListener("click", function (e) {
+                if (e.target.classList.contains("suggestion")) {
+                    inputField.value = e.target.textContent;
+                    suggestions.style.display = "none";
+                }
+            });
+
+            // 点击页面其他位置时，隐藏建议列表
+            document.addEventListener("click", function (e) {
+                if (e.target !== suggestions && e.target !== inputField) {
+                    suggestions.style.display = "none";
+                }
+            });
+
+        }
+
+        // 创建目录
+        function createDirectoryItem(item, parent) {
+            const li = document.createElement("li");
+            li.classList.add("tree-item");
+
+            const span = document.createElement("span");
+            span.textContent = item.label;
+            span.classList.add("tree-icon");
+            span.classList.add("span-active");
+            span.addEventListener("click", () => toggleSubTree(li));
+            span.addEventListener("mouseover", () => showTooltip(item.tooltip));
+            span.addEventListener("mouseout", hideTooltip);
+            span.addEventListener("click", () => toggleActiveClass(span));
+
+            li.appendChild(span);
+
+            if (item.children) {
+                const ul = document.createElement("ul");
+                ul.classList.add("sub-tree");
+                item.children.forEach((child) => createDirectoryItem(child, ul));
+                li.appendChild(ul);
+            }
+
+            parent.appendChild(li);
+        }
+
+        function toggleSubTree(item) {
+            const subTree = item.querySelector(".sub-tree");
+            if (subTree) {
+                subTree.style.display = subTree.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        function showTooltip(text) {
+            const tooltip = document.getElementById("tooltip");
+            tooltip.style.display = "block";
+            tooltip.textContent = text;
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById("tooltip");
+            tooltip.style.display = "none";
+        }
+
+        function toggleActiveClass(element) {
+            element.classList.toggle("active");
+        }
+
+        // 根据 JSON 数据生成目录
+        const directory = document.getElementById("directory");
+        data.forEach((item) => createDirectoryItem(item, directory));
+    </script>
+</body>
+
+</html>

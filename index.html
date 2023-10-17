@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./prism-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <style>
+    /* 自定义的darkStyle样式 */
+    .darkStyle {
+      background-color: #000000;
+      color: #f8f8f2;
+    }
+
+    div.example {
+      width: 98%;
+      color: #000;
+      background-color: #f6f4f0;
+      background-color: #d0e69c;
+      background-color: #dcecb5;
+      background-color: #e5eecc;
+      margin: 5px 0;
+      padding: 5px;
+      border: 1px solid #d4d4d4;
+      background-image: -webkit-linear-gradient(#fff, #e5eecc 100px);
+      background-image: linear-gradient(#fff, #e5eecc 100px);
+    }
+
+    div.example_code {
+      position: relative;
+      line-height: 1.4em;
+      width: 98%;
+      background-color: #f9f9f9;
+      padding: 5px;
+      border: 1px solid #d4d4d4;
+      font-size: 110%;
+      font-family: Menlo, Monaco, Consolas, "Andale Mono", "lucida console", "Courier New", monospace;
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+
+    .hl-main {
+      position: relative;
+      min-height: 30px;
+      background-color: #f9f9f9;
+      font-family: Menlo, Monaco, Consolas, "Andale Mono", "lucida console", "Courier New", monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="wxapp/wx_index.html">微信</a>
+  <pre>
+    <code class="language-javascript">
+      function helloWorld() {
+        console.log("Hello, World!");
+      }
+      helloWorld();
+    </code>
+  </pre>
+  <div class="example">
+    <h2 class="example">实例</h2>
+    <div class="example_code">
+      <div class="hl-main">
+        <code class="language-javascript">
+          function helloWorld() {
+            console.log("Hello, World!");
+          }
+          helloWorld();
+        </code>
+      </div>
+    </div>
+</body>
+<script>
+  // document.addEventListener('DOMContentLoaded', (event) => {
+  Prism.highlightAll();
+    // });
+</script>
+
+</html>
