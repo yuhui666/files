@@ -1,0 +1,26 @@
+[
+  {
+    "title": "技术栈",
+    "sub_title": "多模块技术汇总",
+    "data": [
+      {
+        "title": "视频推拉流",
+        "sub_title": "多种视频推拉流方案，包含（rtsp、rtmp、socket、webrtc）",
+        "image_path": "@/assets/core/live.svg",
+        "data_path": "@/components/configs/catalog/live/live.json"
+      }
+    ]
+  },
+  {
+    "title": "开发语言",
+    "sub_title": "多种语言开发学习",
+    "data": [
+      {
+        "title": "flutter",
+        "sub_title": "flutter语言学习",
+        "image_path": "@/assets/core/flutter.svg",
+        "data_path": "@/components/configs/catalog/live/live.json"
+      }
+    ]
+  }
+]
