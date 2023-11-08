@@ -7,10 +7,13 @@
         <div class="v_col" v-for="j in mainItems[i-1].data.length" :key="j">
           <el-card :body-style="{ padding: '0px' }">
             <div class="horizontal-layout">
-              <img
-                  :src='mainItems[i - 1].data[j - 1].image_path'
-                  class="image"
-              >
+              <el-image
+                  :src="mainItems[i - 1].data[j - 1].image_path"
+                  style="padding: 18px;width: 50%;display: block;"
+              />
+<!--              http://localhost:5173/src/assets/core/flutter.svg-->
+<!--              http://localhost:5173/src/assets/configs/mainItems.json-->
+<!--              <img src="@/assets/core/flutter.svg" class="image">-->
 <!--              mainItems[i - 1].data[j - 1].image_path = @/assets/core/live.svg-->
               <div style="padding: 10px; width: 50%">
                 <span>{{ mainItems[i-1].data[j-1].title }}</span>
@@ -31,22 +34,25 @@
 
 <script lang="ts">
 import {onMounted, ref} from "vue";
-
 export default {
   setup() {
     const mainItems = ref([]);
-
     const handleButtonClick = (cardIndex) => {
-      console.log(`点击了第 ${cardIndex} 个卡片`)
+      console.log(`点击了第 ${cardIndex} 个卡片`);
+      this.$router.push('/page');
     }
-
     onMounted(async () => {
       try {
-        const response = await import('@/components/configs/mainItems.json');
-        console.log(response.default)
-        mainItems.value = response.default
+        const url = 'http://localhost:5173/src/assets/configs/mainItems.json';
+        const response = await fetch(url); // 发起HTTP请求
+        if (response.ok) {
+          const data = await response.json(); // 解析JSON数据
+          mainItems.value = data; // 将数据分配给mainItems
+        } else {
+          console.error('Failed to fetch mainItems.json');
+        }
       } catch (error) {
-        console.error('Failed to load defaultDirectory.json', error);
+        console.error('Failed to fetch mainItems.json', error);
       }
     });
 

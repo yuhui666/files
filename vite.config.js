@@ -5,6 +5,10 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  devServer: {
+    host: 'localhost', // 本地测试地址（默认为 localhost）
+    port: 8080, // 本地测试端口（默认为 8080）
+  },
   plugins: [
     vue(),
   ],

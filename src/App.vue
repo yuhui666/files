@@ -6,6 +6,7 @@ import Core from "@/components/main/Core.vue";
 <template>
   <div id="app">
       <main>
+<!--        <Page/>-->
         <Core/>
 <!--        <test/>-->
       </main>

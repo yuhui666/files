@@ -6,7 +6,7 @@
       {
         "title": "视频推拉流",
         "sub_title": "多种视频推拉流方案，包含（rtsp、rtmp、socket、webrtc）",
-        "image_path": "@/assets/core/live.svg",
+        "image_path": "http://localhost:5173/src/assets/core/live.svg",
         "data_path": "@/components/configs/catalog/live/live.json"
       }
     ]
@@ -18,7 +18,7 @@
       {
         "title": "flutter",
         "sub_title": "flutter语言学习",
-        "image_path": "@/assets/core/flutter.svg",
+        "image_path": "http://localhost:5173/src/assets/core/flutter.svg",
         "data_path": "@/components/configs/catalog/live/live.json"
       }
     ]

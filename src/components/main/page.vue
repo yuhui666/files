@@ -13,15 +13,22 @@ export default defineComponent({
       headerData.value = itemData.label;
     };
 
+
     onMounted(async () => {
       try {
-        const response = await import('@/components/configs/catalog/defaultDirectory.json');
-        filesItemData.value = response.default.map((item) => ({
-          label: item.label,
-          children: item.children || [],
-        }));
+        const url = 'http://localhost:5173/src/assets/configs/catalog/defaultDirectory.json';
+        const response = await fetch(url); // 发起HTTP请求
+        if (response.ok) {
+          const data = await response.json(); // 解析JSON数据
+          filesItemData.value = data.map((item) => ({
+            label: item.label,
+            children: item.children || [],
+          }));
+        } else {
+          console.error('Failed to fetch defaultDirectory.json');
+        }
       } catch (error) {
-        console.error('Failed to load defaultDirectory.json', error);
+        console.error('Failed to fetch defaultDirectory.json', error);
       }
     });
 
