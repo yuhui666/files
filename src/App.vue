@@ -1,16 +1,7 @@
 <script setup>
-import Page from "@/components/main/Page.vue";
-import Test from "@/components/test.vue";
-import Core from "@/components/main/Core.vue";
 </script>
 <template>
-  <div id="app">
-      <main>
-<!--        <Page/>-->
-        <Core/>
-<!--        <test/>-->
-      </main>
-  </div>
+  <router-view/>
 </template>
 
 <style>

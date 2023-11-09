@@ -42,7 +42,7 @@ export default {
     const route = useRoute()
     const handleButtonClick = (cardIndex) => {
       console.log(`点击了第 ${cardIndex} 个卡片`,route,router);
-      router.push({path: `/a/v`});
+      router.push({path: `/main/page`});
     }
     onMounted(async () => {
       try {

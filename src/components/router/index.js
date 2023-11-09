@@ -6,7 +6,7 @@ const Page = () => import('@/components/main/Page.vue'/* webpackChunkName: "sing
 const routes = [
     {
         path: '/',
-        redirect: '/main'
+        redirect: '/main/core'
     },
     {
         path: '/main/page',
