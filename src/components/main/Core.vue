@@ -38,11 +38,11 @@ import {useRoute, useRouter} from "vue-router";
 export default {
   setup() {
     const mainItems = ref([]);
+    const router = useRouter()
+    const route = useRoute()
     const handleButtonClick = (cardIndex) => {
-      let uses1 = new useRoute;
-      let router = new useRouter;
-      console.log(`点击了第 ${cardIndex} 个卡片`,uses1,router);
-      router.push({path: `/main/page`});
+      console.log(`点击了第 ${cardIndex} 个卡片`,route,router);
+      router.push({path: `/a/v`});
     }
     onMounted(async () => {
       try {
