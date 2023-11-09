@@ -27,3 +27,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+https://router.vuejs.org/zh/guide/essentials/route-matching-syntax.html

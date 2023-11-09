@@ -16,6 +16,12 @@
     "sub_title": "多种语言开发学习",
     "data": [
       {
+        "title": "vue",
+        "sub_title": "vue语言学习",
+        "image_path": "http://localhost:5173/src/assets/core/vue.svg",
+        "data_path": "@/components/configs/catalog/vue/vue.json"
+      },
+      {
         "title": "flutter",
         "sub_title": "flutter语言学习",
         "image_path": "http://localhost:5173/src/assets/core/flutter.svg",

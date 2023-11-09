@@ -11,7 +11,7 @@ const routes = [
         path: '/page',
         name: 'page',
         hidden: true,
-        component: () => import('@/components/main/page.vue')
+        component: () => import('@/components/main/Page.vue')
     },
 ];
 
@@ -21,3 +21,7 @@ const router = createRouter({
 });
 
 export default router;
+
+
+
+

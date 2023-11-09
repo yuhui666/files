@@ -1,5 +1,5 @@
 <script setup>
-import Page from "@/components/main/page.vue";
+import Page from "@/components/main/Page.vue";
 import Test from "@/components/test.vue";
 import Core from "@/components/main/Core.vue";
 </script>
@@ -22,7 +22,7 @@ body {
 }
 #app {
   max-width: none;
-  min-width: 0px;
+  min-width: 0;
   height: 100%; /* 让#app占据整个视口高度 */
   width: 100%; /* 让#app占据整个视口宽度 */
   background: rgb(0, 0, 0);

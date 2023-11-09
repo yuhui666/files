@@ -34,12 +34,15 @@
 
 <script lang="ts">
 import {onMounted, ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 export default {
   setup() {
     const mainItems = ref([]);
     const handleButtonClick = (cardIndex) => {
-      console.log(`点击了第 ${cardIndex} 个卡片`);
-      this.$router.push('/page');
+      let uses1 = new useRoute;
+      let router = new useRouter;
+      console.log(`点击了第 ${cardIndex} 个卡片`,uses1,router);
+      router.push({path: `/main/page`});
     }
     onMounted(async () => {
       try {
