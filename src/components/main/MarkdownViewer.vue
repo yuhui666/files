@@ -15,29 +15,23 @@
 import MarkdownIt from 'markdown-it';
 import Clipboard from 'clipboard';
 import {ElMessage} from "element-plus";
-
+import {onMounted, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
 export default {
-  data() {
-    return {
-      markdownText: `
-\`\`\`javascript
-function add(a, b) {
-  return a + b;
-}
-\`\`\`
-`,
-      renderedMarkdown: '',
-    };
+  props:{
+    url:String
   },
-  mounted() {
-    this.renderMarkdown();
-  },
-  methods: {
-    renderMarkdown() {
+  setup(props) {
+    const markdownText = "";
+    const renderedMarkdown = ref("");
+    const router = useRouter()
+    const route = useRoute()
+    const url = route.query.path;
+    const renderMarkdown = () => {
       const md = new MarkdownIt();
-      this.renderedMarkdown = md.render(this.markdownText);
-    },
-    copyCode() {
+      renderedMarkdown.value = md.render(this.markdownText);
+    }
+    const copyCode = () => {
       const clipboard = new Clipboard(this.$refs.markdown, {
         text: () => this.markdownText,
       });
@@ -50,7 +44,32 @@ function add(a, b) {
         e.clearSelection();
         clipboard.destroy();
       });
-    },
+    }
+    console.log("==============","url:"+url)
+    watch(props, (val) => {
+      console.log(val)
+    });
+    onMounted(async () => {
+      try {
+        console.log("----------------","url:"+url)
+        const response = await fetch(url); // 发起HTTP请求
+        if (response.ok) {
+          // 解析JSON数据
+          this.markdownText = await response.formData().toString();
+        } else {
+          console.error('Failed to fetch defaultDirectory.json');
+        }
+      } catch (error) {
+        console.error('Failed to fetch defaultDirectory.json', error);
+      }
+    });
+
+    return {
+      renderedMarkdown,
+      renderMarkdown,
+      copyCode,
+      markdownText,
+    };
   },
 };
 </script>

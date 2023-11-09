@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar style="padding: 33px;">
+  <el-scrollbar style="padding: 33px; width: 100vw">
     <div v-for="i in mainItems.length" :key="i">
       <h1 style="color: #999999; font-style: oblique">{{mainItems[i - 1].title}}</h1>
       <h3 style="color: #999999">{{mainItems[i-1].sub_title}}</h3>
@@ -9,19 +9,17 @@
             <div class="horizontal-layout">
               <el-image
                   :src="mainItems[i - 1].data[j - 1].image_path"
-                  style="padding: 18px;width: 50%;display: block;"
+                  style="padding: 18px;width: 120px; height:120px; display: block;"
+                  fit="contain"
               />
-<!--              http://localhost:5173/src/assets/core/flutter.svg-->
-<!--              http://localhost:5173/src/assets/configs/mainItems.json-->
-<!--              <img src="@/assets/core/flutter.svg" class="image">-->
-<!--              mainItems[i - 1].data[j - 1].image_path = @/assets/core/live.svg-->
               <div style="padding: 10px; width: 50%">
                 <span>{{ mainItems[i-1].data[j-1].title }}</span>
-<!--                <span>{{ mainItems[i - 1].data[j - 1].image_path }}</span>-->
                 <br>
                 <span class="subtitle">{{ mainItems[i-1].data[j-1].sub_title }}</span>
                 <br>
-                <el-button type="info" plain @click="handleButtonClick(j)">查看</el-button>
+                <el-button type="info" plain @click="handleButtonClick(
+                    mainItems[i-1].data[j-1].data_path
+                )">查看</el-button>
               </div>
             </div>
           </el-card>
@@ -40,9 +38,9 @@ export default {
     const mainItems = ref([]);
     const router = useRouter()
     const route = useRoute()
-    const handleButtonClick = (cardIndex) => {
-      console.log(`点击了第 ${cardIndex} 个卡片`,route,router);
-      router.push({path: `/main/page`});
+    const handleButtonClick = (path) => {
+      console.log(path,route,router);
+      router.push({path: `/main/page`,query:{path:path}});
     }
     onMounted(async () => {
       try {
@@ -75,15 +73,12 @@ export default {
   gap: 10px;
 }
 
-.span {
-  line-height: 3px;
-}
-
 .horizontal-layout {
   display: flex; /* 使用Flex布局 */
   justify-content: space-between; /* 横向布局，均匀分布 */
   align-items: center; /* 垂直居中对齐 */
 }
+
 
 .column-layout {
   column-count: 6; /* 列数 */
@@ -92,23 +87,11 @@ export default {
 
 .v_col {
   break-inside: avoid; /* 防止单独列的内容被分割 */
-  width: calc(16.66% - 10px); /* 计算每列的宽度，减去列之间的间距 */
+  width: calc(16.66% - 10px); /* 计算每列的宽度，减去列之间的间距 */;
 }
 
 .subtitle {
   font-size: 12px;
   color: #999;
-}
-
-.button {
-  padding: 0;
-  min-height: auto;
-  padding: 6px;
-}
-
-.image {
-  padding: 18px;
-  width: 50%;
-  display: block;
 }
 </style>

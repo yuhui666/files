@@ -48,10 +48,13 @@ export default defineComponent({
         console.log("filter","=========",treeRef.value)
       }
     });
+    console.log("aaaaaaaaaaaaaaa",props.filesItemData)
     // 对传入的数据进行格式转换
     const filesItemData = props.filesItemData.map(item => {
       return {
         label: item.label,
+        item_path: item.item_path,
+        path: item.path,
         children: item.children || [],
       };
     });

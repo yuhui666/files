@@ -2,21 +2,27 @@
 import { defineComponent, ref, onMounted, Ref } from 'vue';
 import Files from '@/components/widget/Files.vue';
 import MarkdownViewer from "@/components/main/MarkdownViewer.vue";
-
+import {useRoute, useRouter} from "vue-router";
 export default defineComponent({
   components: {MarkdownViewer, Files },
+
   setup() {
     const filesItemData: Ref<any[]> = ref([]);
-    const headerData: Ref<string> = ref(''); // Initialize with an empty string
-
+    const headerData: Ref<string> = ref("");
+    const markdownUrl: Ref<string> = ref("");// Initialize with an empty string
+    const router = useRouter()
+    const route = useRoute()
+    const url = route.query.path;
     const onNodeChange = (itemData) => {
-      headerData.value = itemData.label;
+      headerData.value = itemData.data.item_path;
+      markdownUrl.value =itemData.data.path;
+      router.push({path: `/main/page`,query:{path:itemData.data.path}});
+      console.log(itemData.data.path)
     };
 
-
+//传值的json赋值给这里的url
     onMounted(async () => {
       try {
-        const url = 'http://localhost:5173/src/assets/configs/catalog/defaultDirectory.json';
         const response = await fetch(url); // 发起HTTP请求
         if (response.ok) {
           const data = await response.json(); // 解析JSON数据
@@ -33,6 +39,7 @@ export default defineComponent({
     });
 
     return {
+      markdownUrl,
       onNodeChange,
       filesItemData,
       headerData, // Expose headerData in the return object
@@ -53,7 +60,7 @@ export default defineComponent({
       <el-container class="right">
         <el-header class="header">{{ headerData }}</el-header> <!-- Use double curly braces to display headerData -->
         <el-main class="content">
-          <markdown-viewer/>
+          <markdown-viewer :url="markdownUrl"/>
         </el-main>
         <el-footer class="footer">Footer</el-footer>
       </el-container>

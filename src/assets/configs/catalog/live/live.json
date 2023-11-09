@@ -1,0 +1,20 @@
+[
+  {
+    "label": "webrtc简介",
+    "item_id": "1",
+    "children": [
+      {
+        "label": "项目项目源头介绍",
+        "item_path":"webrtc简介/项目项目源头介绍",
+        "item_id": "1.1",
+        "path":"http://localhost:5173/src/assets/configs/catalog/live/files/live1_1.md"
+      },
+      {
+        "label": "webrtc简介/项目结构介绍",
+        "item_path":"项目结构介绍",
+        "item_id": "1.2",
+        "path": "http://localhost:5173/src/assets/configs/catalog/live/files/live1_2.md"
+      }
+    ]
+  }
+]
