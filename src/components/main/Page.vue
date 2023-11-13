@@ -16,8 +16,8 @@ export default defineComponent({
     const onNodeChange = (itemData) => {
       headerData.value = itemData.data.item_path;
       markdownUrl.value =itemData.data.path;
-      router.push({path: `/main/page`,query:{path:itemData.data.path}});
-      console.log(itemData.data.path)
+      router.push({path: `/main/page`,query:{md_path:itemData.data.path}});
+      console.log("mdpath"+itemData.data.path)
     };
 
 //传值的json赋值给这里的url
