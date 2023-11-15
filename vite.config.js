@@ -14,7 +14,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      exclude: ['babel-runtime/core-js/get-iterator', 'babel-runtime/core-js/object/keys']
     }
   }
 })
