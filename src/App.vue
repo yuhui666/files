@@ -2,8 +2,8 @@
 import Test from "@/components/main/Test.vue";
 </script>
 <template>
-<!--  <router-view/>-->
-  <Test/>
+  <router-view/>
+<!--  <Test/>-->
 </template>
 
 <style>

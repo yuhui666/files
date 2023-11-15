@@ -115,7 +115,7 @@ export default defineComponent({
 
 .content {
   height: 85vh;
-  background-color: #2c2c2c;
+  background-color: #2B2B2B;
   color: #ffffff;
   padding: 10px;
 }

@@ -1,96 +1,49 @@
 <template>
     <div>
-        <div class="markdown-container">
-            <div v-html="renderedMarkdown" ref="markdown" class="markdown-content"></div>
-        </div>
+        <div
+            class="markdown-content"
+            v-html="renderedMarkdown"
+            @click="handleLinkClick"
+        ></div>
     </div>
 </template>
 
-<script lang="ts">
-import MarkdownIt from 'markdown-it';
-import Clipboard from 'clipboard';
-import anchor from 'markdown-it-anchor';
-import container from 'markdown-it-container';
-import 'highlight.js/styles/default.css'; // Import the highlight.js stylesheet
-import { ElMessage } from 'element-plus';
-import { onMounted, ref, watchEffect } from 'vue';
-import hljs from 'highlight.js'; // Import highlight.js for syntax highlighting
+<script>
+import { ref, watchEffect } from "vue";
+import marked from "marked";
+import hljs from "highlight.js";
+import "highlight.js/styles/a11y-dark.css";
 
 export default {
     props: {
         url: String,
     },
     setup(props) {
-        const markdownText = ref('');
-        const renderedMarkdown = ref('');
+        const markdownText = ref("");
+        const renderedMarkdown = ref("");
 
         const renderMarkdown = () => {
-            const md = new MarkdownIt({
-                highlight: (str, lang) => {
-                    if (lang && hljs.getLanguage(lang)) {
-                        try {
-                            return hljs.highlight(lang, str).value;
-                        } catch (__) {}
-                    }
-
-                    return ''; // use external default escaping
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                highlight: function (code, lang) {
+                    return lang
+                        ? hljs.highlight(lang, code).value
+                        : hljs.highlightAuto(code).value;
                 },
             });
+            renderedMarkdown.value = marked(markdownText.value, { breaks: true });
+        };
 
-            // 使用插件
-            md.use(anchor);
-            md.use(container, 'code', {
-                render(tokens, idx) {
-                    // 渲染代码块时添加样式类
-                    return tokens[idx].nesting === 1
-                        ? `<div class="code-container">\n`
-                        : `</div>\n`;
-                },
-            });
-
-            renderedMarkdown.value = md.render(markdownText.value);
-
-            // 添加样式类或其他样式操作
-            const markdownContainer = document.querySelector('.markdown-container');
-            if (markdownContainer) {
-                const codeContainers = markdownContainer.querySelectorAll('.code-container');
-                codeContainers.forEach((container) => {
-                    container.style.backgroundColor = '#f2f2f2';
-                    container.style.color = '#333';
-                    container.style.borderRadius = '5px';
-                    container.style.padding = '10px';
-                    container.style.margin = '10px 0';
-                    container.style.overflow = 'auto';
-                    container.style.border = '1px solid #ddd';
-                });
-
-                const links = markdownContainer.querySelectorAll('a');
-                links.forEach((link) => {
-                    link.style.color = '#3498db';
-                    link.style.textDecoration = 'none';
-                    link.style.transition = 'color 0.3s';
-                });
-
-                markdownContainer.addEventListener('mouseover', (event) => {
-                    const target = event.target;
-                    if (target.tagName === 'A') {
-                        target.style.color = '#2980b9';
-                        target.style.textDecoration = 'underline';
-                    }
-                });
-
-                markdownContainer.addEventListener('mouseout', (event) => {
-                    const target = event.target;
-                    if (target.tagName === 'A') {
-                        target.style.color = '#3498db';
-                        target.style.textDecoration = 'none';
-                    }
-                });
+        const handleLinkClick = (event) => {
+            const target = event.target;
+            if (target.tagName === "A") {
+                const href = target.getAttribute("href");
+                console.log("Link clicked:", href);
             }
         };
 
         watchEffect(() => {
-            if (props.url.endsWith('json')) {
+            if (props.url.endsWith("json")) {
                 return;
             }
             fetchData();
@@ -104,41 +57,46 @@ export default {
                     markdownText.value = str;
                     renderMarkdown();
                 } else {
-                    console.error('Failed to fetch markdown content');
-                    markdownText.value = '无内容';
+                    console.error("Failed to fetch markdown content");
+                    markdownText.value = "无内容";
                     renderMarkdown();
                 }
             } catch (error) {
-                console.error('Error fetching markdown content', error);
-                markdownText.value = '无内容';
+                console.error("Error fetching markdown content", error);
+                markdownText.value = "无内容";
                 renderMarkdown();
             }
         }
 
-        onMounted(() => {
-            // You can keep other setup logic here if needed
-        });
-
         return {
+            handleLinkClick,
             renderedMarkdown,
-            renderMarkdown,
-            markdownText,
         };
     },
 };
 </script>
 
 <style scoped>
-.markdown-container {
-    position: relative;
-}
-
 .markdown-content {
     position: relative;
     margin: 15px 0;
 }
+     /* 添加代码块的背景和圆角样式 */
+ .markdown-content /deep/ pre {
+     background-color: #3C3D3E; /* 设置代码块背景色 */
+     padding: 10px; /* 设置代码块内边距 */
+     border-radius: 5px; /* 设置代码块圆角 */
+     overflow: auto; /* 处理代码块过长时的滚动条 */
+     font-weight: bold;
+     margin: 5px;
+ }
 
-.dark-code-block:hover {
-    background-color: #444;
+.markdown-content /deep/ code {
+    background-color: #3C3D3E; /* 设置代码块背景色 */
+    padding: 10px; /* 设置代码块内边距 */
+    border-radius: 5px; /* 设置代码块圆角 */
+    overflow: auto; /* 处理代码块过长时的滚动条 */
+    font-weight: bold;
 }
+
 </style>
